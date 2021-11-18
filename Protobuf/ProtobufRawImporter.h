@@ -19,11 +19,17 @@ typedef enum : NSUInteger {
     PXProtobufPayloadModeDelimited,
 } PXProtobufPayloadMode;
 
+@protocol ProtobufRawImporterDelegate <NSObject>
+-(void) protobufRawImporterOnError:(NSString *) message;
+-(void) protobufRawImporterOnWarning:(NSString *) message;
+@end
+
 // Dealing with ProtoC++
 // Shouldn't use it directly
 // Please Use ProtobufImporter.swift
 @interface ProtobufRawImporter : NSObject
 @property(readonly, nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
+@property(weak, nonatomic, nullable) id<ProtobufRawImporterDelegate> delegate;
 
 +(void) registerRootDirectory:(NSString *) rootDirectory;
 +(instancetype) sharedInstance;
@@ -32,6 +38,12 @@ typedef enum : NSUInteger {
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names;
 -(void) resetAll;
 -(NSArray<PXProtobufContent *> * __nonnull) parseProtobufContentWithMessageType:(NSString *) _messageType from:(NSData *) _data payloadMode:(PXProtobufPayloadMode) mode;
+
+//
+// Internal use
+//
++(void) addErrorMessage:(NSString *) message;
++(void) addWarningMessage:(NSString *) message;
 
 @end
 

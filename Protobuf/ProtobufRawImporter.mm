@@ -41,15 +41,21 @@ using namespace google::protobuf::util;
 class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector
 {
 public:
-    void AddError(const string & filename, int line, int column, const string & message){
+    void AddError(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *error = @(message.c_str());
+        [ProtobufRawImporter addErrorMessage:error];
     }
-    void AddWarning(const string & filename, int line, int column, const string & message){
+    void AddWarning(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] Warn: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *warning = @(message.c_str());
+        [ProtobufRawImporter addWarningMessage:warning];
     }
-
 };
-
 
 @implementation PXProtobufContent
 
@@ -85,6 +91,7 @@ static NSString *_registerRootDirectory = NULL;
 @property (copy, nonatomic) NSString *rootDirectory;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *protobufFiles;
+
 @end
 
 @implementation ProtobufRawImporter
@@ -331,4 +338,13 @@ static NSString *_registerRootDirectory = NULL;
     return content;
 }
 
++(void) addErrorMessage:(NSString *) message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnError:[message copy]];
+}
+
++(void) addWarningMessage:(NSString *) message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnWarning:[message copy]];
+}
 @end
