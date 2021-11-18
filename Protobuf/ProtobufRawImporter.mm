@@ -41,15 +41,21 @@ using namespace google::protobuf::util;
 class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector
 {
 public:
-    void AddError(const string & filename, int line, int column, const string & message){
+    void AddError(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *error = @(message.c_str());
+        [ProtobufRawImporter addErrorMessage:error];
     }
-    void AddWarning(const string & filename, int line, int column, const string & message){
+    void AddWarning(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] Warn: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *warning = @(message.c_str());
+        [ProtobufRawImporter addWarningMessage:warning];
     }
-
 };
-
 
 @implementation PXProtobufContent
 
@@ -74,6 +80,8 @@ public:
 }
 @end
 
+static NSString *_registerRootDirectory = NULL;
+
 @interface ProtobufRawImporter() {
     Arena arena;
     DiskSourceTree source_tree;
@@ -83,9 +91,28 @@ public:
 @property (copy, nonatomic) NSString *rootDirectory;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *protobufFiles;
+
 @end
 
 @implementation ProtobufRawImporter
+
++(void) registerRootDirectory:(NSString *) rootDirectory {
+    _registerRootDirectory = rootDirectory;
+}
+
++(instancetype)sharedInstance {
+    // Must call +[ProtobufRawImporter registerRootDirectory:] before using the singleton
+    if (_registerRootDirectory == NULL) {
+        return nil;
+    }
+
+    static ProtobufRawImporter *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ProtobufRawImporter alloc] initWithRootDirectory:_registerRootDirectory];
+    });
+    return sharedInstance;
+}
 
 -(instancetype) initWithRootDirectory:(NSString *) rootDirectory {
     self = [super init];
@@ -311,4 +338,13 @@ public:
     return content;
 }
 
++(void) addErrorMessage:(NSString *) message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnError:[message copy]];
+}
+
++(void) addWarningMessage:(NSString *) message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnWarning:[message copy]];
+}
 @end
