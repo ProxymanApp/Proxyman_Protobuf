@@ -25,9 +25,12 @@ typedef enum : NSUInteger {
 @interface ProtobufRawImporter : NSObject
 @property(readonly, nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
 
--(instancetype) initWithRootDirectory:(NSString *) rootDirectory;
++(void) registerRootDirectory:(NSString *) rootDirectory;
++(instancetype) sharedInstance;
+
 -(void) loadProtobufFileWithName:(NSString *) name;
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names;
+-(void) resetAll;
 -(NSArray<PXProtobufContent *> * __nonnull) parseProtobufContentWithMessageType:(NSString *) _messageType from:(NSData *) _data payloadMode:(PXProtobufPayloadMode) mode;
 
 @end

@@ -74,6 +74,8 @@ public:
 }
 @end
 
+static NSString *_registerRootDirectory = NULL;
+
 @interface ProtobufRawImporter() {
     Arena arena;
     DiskSourceTree source_tree;
@@ -86,6 +88,24 @@ public:
 @end
 
 @implementation ProtobufRawImporter
+
++(void) registerRootDirectory:(NSString *) rootDirectory {
+    _registerRootDirectory = rootDirectory;
+}
+
++(instancetype)sharedInstance {
+    // Must call +[ProtobufRawImporter registerRootDirectory:] before using the singleton
+    if (_registerRootDirectory == NULL) {
+        return nil;
+    }
+
+    static ProtobufRawImporter *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ProtobufRawImporter alloc] initWithRootDirectory:_registerRootDirectory];
+    });
+    return sharedInstance;
+}
 
 -(instancetype) initWithRootDirectory:(NSString *) rootDirectory {
     self = [super init];
