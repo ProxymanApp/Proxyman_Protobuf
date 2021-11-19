@@ -20,6 +20,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/compiler/command_line_interface.h>
 
 using namespace std;
 using namespace google::protobuf;
@@ -347,4 +348,45 @@ static NSString *_registerRootDirectory = NULL;
     ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
     [shared.delegate protobufRawImporterOnWarning:[message copy]];
 }
+
+-(void) paresDescriptor {
+    // Read from file
+    std::vector<std::string> final_args;
+    google::protobuf::FileDescriptorSet file_descriptor_set;
+    for (const auto& input : final_args) {
+        int in_fd = ::open(input.c_str(), O_RDONLY);
+        if (in_fd < 0) {
+            return ;
+        }
+        google::protobuf::io::FileInputStream file_stream(in_fd);
+        google::protobuf::io::CodedInputStream coded_input(&file_stream);
+        if (!file_descriptor_set.ParseFromCodedStream(&coded_input)) {
+
+            return;
+        }
+        if (!file_stream.Close()) {
+            return ;
+        }
+    }
+
+    google::protobuf::DescriptorPool descriptor_pool;
+    descriptor_pool.AllowUnknownDependencies();
+    for (const auto& d : file_descriptor_set.file()) {
+        const FileDescriptor *file = descriptor_pool.BuildFile(d);
+    }
+}
+
+-(void) parseDescriptorFromProto {
+    google::protobuf::compiler::CommandLineInterface cli;
+    cli.SetInputsAreProtoPathRelative(true);
+
+    string proto_path = "-I";
+    const char* argv[] = {
+        "protoc",
+        proto_path.c_str(),
+        "test.proto"
+    };
+    cli.Run(5, argv);
+}
+
 @end
