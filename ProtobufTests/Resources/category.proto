@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package com.example;
+
+enum Category {
+  WORK = 0;
+  HOME = 1;
+  FAMILY = 2;
+}
