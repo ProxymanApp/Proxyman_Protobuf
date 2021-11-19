@@ -44,6 +44,7 @@ typedef enum : NSUInteger {
 //
 +(void) addErrorMessage:(NSString *) message;
 +(void) addWarningMessage:(NSString *) message;
+-(void) parseDescriptorFromProto;
 
 @end
 

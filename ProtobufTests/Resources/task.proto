@@ -3,7 +3,7 @@ syntax = "proto3";
 package com.example;
 
 import "category.proto";
-import "google.common.proto";
+import "google/protobuf/timestamp.proto";
 
 message Task {
   string title = 1;

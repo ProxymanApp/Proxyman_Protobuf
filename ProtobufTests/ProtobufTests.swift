@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import Protobuf
 
 class ProtobufTests: XCTestCase {
 
@@ -17,16 +18,12 @@ class ProtobufTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testParseDescFromProtobufFile() throws {
+        let bundle = Bundle(for: ProtobufTests.self)
+        let file = bundle.url(forResource: "task", withExtension: "proto")!
+        ProtobufRawImporter.registerRootDirectory(file.deletingLastPathComponent().path)
+        let importer = ProtobufRawImporter.sharedInstance()
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+        importer.parseDescriptorFromProto()
     }
-
 }

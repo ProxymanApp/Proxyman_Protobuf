@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "DED3F0BC-4F61-46E2-AB91-1482A23D9050"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "037C8100-9FDA-4962-AA29-5DA8CA426635"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProtobufTests/ProtobufTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "testParseDescFromProtobufFile()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "037C8100-9FDA-4962-AA29-5DA8CA426635 - 1ba1f6e2d94b40ab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ProtobufTests.ProtobufTests.testParseDescFromProtobufFile() throws -&gt; ()"
+                  moduleName = "ProtobufTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/ProtobufTests/ProtobufTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "268">
+               </Location>
+               <Location
+                  uuid = "037C8100-9FDA-4962-AA29-5DA8CA426635 - 1ba1f6e2d94b4088"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ProtobufTests.ProtobufTests.testParseDescFromProtobufFile() throws -&gt; ()"
+                  moduleName = "ProtobufTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/ProtobufTests/ProtobufTests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "1004">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1116A48E-2423-449C-9058-C86732CD92AC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Protobuf/ProtobufRawImporter.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "399"
+            endingLineNumber = "399"
+            landmarkName = "-parseDescriptorFromProto"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1116A48E-2423-449C-9058-C86732CD92AC - c7e6f3ad21f47d33"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ProtobufRawImporter parseDescriptorFromProto]"
+                  moduleName = "Protobuf"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/Protobuf/ProtobufRawImporter.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "393"
+                  endingLineNumber = "393"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  uuid = "1116A48E-2423-449C-9058-C86732CD92AC - c7e6f3ad21f47cb7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ProtobufRawImporter parseDescriptorFromProto]"
+                  moduleName = "Protobuf"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/Protobuf/ProtobufRawImporter.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "397"
+                  endingLineNumber = "397"
+                  offsetFromSymbolStart = "276">
+               </Location>
+               <Location
+                  uuid = "1116A48E-2423-449C-9058-C86732CD92AC - c7e6f3ad21f47c94"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ProtobufRawImporter parseDescriptorFromProto]"
+                  moduleName = "Protobuf"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/Protobuf/ProtobufRawImporter.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "398"
+                  endingLineNumber = "398"
+                  offsetFromSymbolStart = "288">
+               </Location>
+               <Location
+                  uuid = "1116A48E-2423-449C-9058-C86732CD92AC - c7e6f3ad21f47cf5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[ProtobufRawImporter parseDescriptorFromProto]"
+                  moduleName = "Protobuf"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/nghiatran/Documents/work/proxyman/Proxyman_Protobuf/Protobuf/ProtobufRawImporter.mm"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "399"
+                  endingLineNumber = "399"
+                  offsetFromSymbolStart = "280">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

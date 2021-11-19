@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA331B0427478AAD00BE7EF0 /* ProtobufTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA331B0327478AAD00BE7EF0 /* ProtobufTests.swift */; };
+		BA331B0527478AAD00BE7EF0 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAEF8F3C255F960200EB8FBD /* Protobuf.framework */; };
+		BA331B0F27479A3300BE7EF0 /* category.proto in Sources */ = {isa = PBXBuildFile; fileRef = BA331B0C27479A3300BE7EF0 /* category.proto */; };
+		BA331B1027479A3300BE7EF0 /* taskresponse.proto in Sources */ = {isa = PBXBuildFile; fileRef = BA331B0D27479A3300BE7EF0 /* taskresponse.proto */; };
+		BA331B1127479A3300BE7EF0 /* task.proto in Sources */ = {isa = PBXBuildFile; fileRef = BA331B0E27479A3300BE7EF0 /* task.proto */; };
+		BA331B1227479A3F00BE7EF0 /* task.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0E27479A3300BE7EF0 /* task.proto */; };
+		BA331B1327479A3F00BE7EF0 /* taskresponse.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0D27479A3300BE7EF0 /* taskresponse.proto */; };
+		BA331B1427479A4600BE7EF0 /* category.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0C27479A3300BE7EF0 /* category.proto */; };
 		BAEF8F41255F960200EB8FBD /* Protobuf.h in Headers */ = {isa = PBXBuildFile; fileRef = BAEF8F3F255F960200EB8FBD /* Protobuf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BAEF90E2255F961800EB8FBD /* source_context.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = BAEF8F4A255F961700EB8FBD /* source_context.pb.h */; };
 		BAEF90E3255F961800EB8FBD /* any.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAEF8F4B255F961700EB8FBD /* any.cc */; };
@@ -407,7 +415,22 @@
 		BAEF9273255F96B100EB8FBD /* ProtobufRawImporter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BAEF9271255F96B100EB8FBD /* ProtobufRawImporter.mm */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BA331B0627478AAD00BE7EF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BAEF8F33255F960200EB8FBD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BAEF8F3B255F960200EB8FBD;
+			remoteInfo = Protobuf;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		BA331B0127478AAD00BE7EF0 /* ProtobufTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtobufTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA331B0327478AAD00BE7EF0 /* ProtobufTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtobufTests.swift; sourceTree = "<group>"; };
+		BA331B0C27479A3300BE7EF0 /* category.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = category.proto; sourceTree = "<group>"; };
+		BA331B0D27479A3300BE7EF0 /* taskresponse.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = taskresponse.proto; sourceTree = "<group>"; };
+		BA331B0E27479A3300BE7EF0 /* task.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = task.proto; sourceTree = "<group>"; };
 		BAEF8F3C255F960200EB8FBD /* Protobuf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Protobuf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAEF8F3F255F960200EB8FBD /* Protobuf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protobuf.h; sourceTree = "<group>"; };
 		BAEF8F40255F960200EB8FBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -811,6 +834,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BA331AFE27478AAD00BE7EF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA331B0527478AAD00BE7EF0 /* Protobuf.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAEF8F39255F960200EB8FBD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -821,10 +852,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BA331B0227478AAD00BE7EF0 /* ProtobufTests */ = {
+			isa = PBXGroup;
+			children = (
+				BA331B0B27479A2B00BE7EF0 /* Resources */,
+				BA331B0327478AAD00BE7EF0 /* ProtobufTests.swift */,
+			);
+			path = ProtobufTests;
+			sourceTree = "<group>";
+		};
+		BA331B0B27479A2B00BE7EF0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BA331B0C27479A3300BE7EF0 /* category.proto */,
+				BA331B0E27479A3300BE7EF0 /* task.proto */,
+				BA331B0D27479A3300BE7EF0 /* taskresponse.proto */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		BAEF8F32255F960200EB8FBD = {
 			isa = PBXGroup;
 			children = (
 				BAEF8F3E255F960200EB8FBD /* Protobuf */,
+				BA331B0227478AAD00BE7EF0 /* ProtobufTests */,
 				BAEF8F3D255F960200EB8FBD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -833,6 +884,7 @@
 			isa = PBXGroup;
 			children = (
 				BAEF8F3C255F960200EB8FBD /* Protobuf.framework */,
+				BA331B0127478AAD00BE7EF0 /* ProtobufTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1584,6 +1636,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		BA331B0027478AAD00BE7EF0 /* ProtobufTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA331B0A27478AAD00BE7EF0 /* Build configuration list for PBXNativeTarget "ProtobufTests" */;
+			buildPhases = (
+				BA331AFD27478AAD00BE7EF0 /* Sources */,
+				BA331AFE27478AAD00BE7EF0 /* Frameworks */,
+				BA331AFF27478AAD00BE7EF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BA331B0727478AAD00BE7EF0 /* PBXTargetDependency */,
+			);
+			name = ProtobufTests;
+			productName = ProtobufTests;
+			productReference = BA331B0127478AAD00BE7EF0 /* ProtobufTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BAEF8F3B255F960200EB8FBD /* Protobuf */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BAEF8F44255F960200EB8FBD /* Build configuration list for PBXNativeTarget "Protobuf" */;
@@ -1608,8 +1678,12 @@
 		BAEF8F33255F960200EB8FBD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
+					BA331B0027478AAD00BE7EF0 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 					BAEF8F3B255F960200EB8FBD = {
 						CreatedOnToolsVersion = 12.2;
 					};
@@ -1629,11 +1703,22 @@
 			projectRoot = "";
 			targets = (
 				BAEF8F3B255F960200EB8FBD /* Protobuf */,
+				BA331B0027478AAD00BE7EF0 /* ProtobufTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BA331AFF27478AAD00BE7EF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA331B1427479A4600BE7EF0 /* category.proto in Resources */,
+				BA331B1227479A3F00BE7EF0 /* task.proto in Resources */,
+				BA331B1327479A3F00BE7EF0 /* taskresponse.proto in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAEF8F3A255F960200EB8FBD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1650,6 +1735,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BA331AFD27478AAD00BE7EF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA331B0F27479A3300BE7EF0 /* category.proto in Sources */,
+				BA331B0427478AAD00BE7EF0 /* ProtobufTests.swift in Sources */,
+				BA331B1027479A3300BE7EF0 /* taskresponse.proto in Sources */,
+				BA331B1127479A3300BE7EF0 /* task.proto in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BAEF8F38255F960200EB8FBD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1843,7 +1939,65 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BA331B0727478AAD00BE7EF0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BAEF8F3B255F960200EB8FBD /* Protobuf */;
+			targetProxy = BA331B0627478AAD00BE7EF0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		BA331B0827478AAD00BE7EF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3X57WP8E8V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proxyman.ProtobufTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BA331B0927478AAD00BE7EF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3X57WP8E8V;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proxyman.ProtobufTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		BAEF8F42255F960200EB8FBD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2028,6 +2182,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BA331B0A27478AAD00BE7EF0 /* Build configuration list for PBXNativeTarget "ProtobufTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA331B0827478AAD00BE7EF0 /* Debug */,
+				BA331B0927478AAD00BE7EF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BAEF8F36255F960200EB8FBD /* Build configuration list for PBXProject "Protobuf" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -378,15 +378,25 @@ static NSString *_registerRootDirectory = NULL;
 
 -(void) parseDescriptorFromProto {
     google::protobuf::compiler::CommandLineInterface cli;
-    cli.SetInputsAreProtoPathRelative(true);
+//    cli.SetInputsAreProtoPathRelative(true);
 
+    std::string root_dir = std::string([self.rootDirectory UTF8String]);
     string proto_path = "-I";
+    proto_path.append(" ");
+    proto_path.append(root_dir);
+
     const char* argv[] = {
         "protoc",
-        proto_path.c_str(),
-        "test.proto"
+        "--descriptor_set_out=merge.desc",
+        "--include_source_info",
+        "--include_imports",
+        "-I",
+        root_dir.c_str(),
+        "*.proto"
     };
-    cli.Run(5, argv);
+
+    // protoc --descriptor_set_out=foo.desc --include_imports foo.proto
+    cli.Run(7, argv);
 }
 
 @end
