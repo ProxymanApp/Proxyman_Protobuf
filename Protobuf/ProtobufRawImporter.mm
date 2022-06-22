@@ -359,7 +359,7 @@ static NSString *_registerRootDirectory = NULL;
 -(void) paresFileDescriptorAtPath:(NSString *) filePath error:(NSError **) errorPtr {
 
     // Read from file
-    std::string pathName = "/Users/nghiatran/Desktop/proto/foo.desc";
+    std::string pathName = std::string([filePath UTF8String]);
     std::vector<std::string> final_args;
     final_args.push_back(pathName);
 
