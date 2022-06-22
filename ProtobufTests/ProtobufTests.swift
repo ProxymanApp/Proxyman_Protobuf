@@ -33,4 +33,20 @@ class ProtobufTests: XCTestCase {
 
         XCTAssertEqual(3, importer.getAllMessageTypes().count)
     }
+
+    func testParseGoogleFile() throws {
+        let bundle = Bundle(for: ProtobufTests.self)
+        let file = bundle.url(forResource: "google", withExtension: "desc")!
+        ProtobufRawImporter.registerRootDirectory(file.deletingLastPathComponent().path)
+        let importer = ProtobufRawImporter.sharedInstance()
+
+        var error : NSError?
+        importer.paresFileDescriptor(atPath: file.path, error: &error)
+
+        if let error = error {
+            XCTFail(error.localizedDescription)
+        }
+
+        XCTAssertEqual(26, importer.getAllMessageTypes().count)
+    }
 }
