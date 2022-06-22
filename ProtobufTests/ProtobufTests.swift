@@ -20,10 +20,16 @@ class ProtobufTests: XCTestCase {
 
     func testParseDescFromProtobufFile() throws {
         let bundle = Bundle(for: ProtobufTests.self)
-        let file = bundle.url(forResource: "task", withExtension: "proto")!
+        let file = bundle.url(forResource: "data", withExtension: "desc")!
         ProtobufRawImporter.registerRootDirectory(file.deletingLastPathComponent().path)
         let importer = ProtobufRawImporter.sharedInstance()
 
-        importer.parseDescriptorFromProto()
+        var error : NSError?
+        importer.paresFileDescriptor(atPath: file.path, error: &error)
+
+        if let error = error {
+            XCTFail(error.localizedDescription)
+        }
+
     }
 }

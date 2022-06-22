@@ -177,6 +177,7 @@ static NSString *_registerRootDirectory = NULL;
             if (![self.allMessageTypes containsObject:fullName]) {
                 // Add at top
                 // Make sure the user's Schemas are always at top of the list
+                NSLog(@"Import Message Name = %@", fullName);
                 [self.allMessageTypes insertObject:fullName atIndex:0];
             }
         }
@@ -349,22 +350,34 @@ static NSString *_registerRootDirectory = NULL;
     [shared.delegate protobufRawImporterOnWarning:[message copy]];
 }
 
--(void) paresDescriptor {
++(NSError *) initErrorWithMessage:(NSString *) message code:(NSInteger) code {
+    NSString *domain = @"com.proxyman.io.protobuf";
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:message, @"NSLocalizedDescriptionKey",NULL];
+    return [NSError errorWithDomain: domain code: code userInfo: userInfo];
+}
+
+-(void) paresFileDescriptorAtPath:(NSString *) filePath error:(NSError **) errorPtr {
+
     // Read from file
+    std::string pathName = "/Users/nghiatran/Desktop/proto/foo.desc";
     std::vector<std::string> final_args;
+    final_args.push_back(pathName);
+
     google::protobuf::FileDescriptorSet file_descriptor_set;
     for (const auto& input : final_args) {
         int in_fd = ::open(input.c_str(), O_RDONLY);
         if (in_fd < 0) {
-            return ;
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not load file" code:101];
+            return;
         }
         google::protobuf::io::FileInputStream file_stream(in_fd);
         google::protobuf::io::CodedInputStream coded_input(&file_stream);
         if (!file_descriptor_set.ParseFromCodedStream(&coded_input)) {
-
-            return;
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not parse the desc file" code:102];
+            return ;
         }
         if (!file_stream.Close()) {
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not close the file stream" code:103];
             return ;
         }
     }
@@ -373,30 +386,8 @@ static NSString *_registerRootDirectory = NULL;
     descriptor_pool.AllowUnknownDependencies();
     for (const auto& d : file_descriptor_set.file()) {
         const FileDescriptor *file = descriptor_pool.BuildFile(d);
+        [self getMessageTypeFromFileDescriptor:file];
     }
+    return;
 }
-
--(void) parseDescriptorFromProto {
-    google::protobuf::compiler::CommandLineInterface cli;
-//    cli.SetInputsAreProtoPathRelative(true);
-
-    std::string root_dir = std::string([self.rootDirectory UTF8String]);
-    string proto_path = "-I";
-    proto_path.append(" ");
-    proto_path.append(root_dir);
-
-    const char* argv[] = {
-        "protoc",
-        "--descriptor_set_out=merge.desc",
-        "--include_source_info",
-        "--include_imports",
-        "-I",
-        root_dir.c_str(),
-        "*.proto"
-    };
-
-    // protoc --descriptor_set_out=foo.desc --include_imports foo.proto
-    cli.Run(7, argv);
-}
-
 @end

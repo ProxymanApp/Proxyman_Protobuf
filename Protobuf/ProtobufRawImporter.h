@@ -38,13 +38,13 @@ typedef enum : NSUInteger {
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names;
 -(void) resetAll;
 -(NSArray<PXProtobufContent *> * __nonnull) parseProtobufContentWithMessageType:(NSString *) _messageType from:(NSData *) _data payloadMode:(PXProtobufPayloadMode) mode;
+-(void) paresFileDescriptorAtPath:(NSString *) filePath error:(NSError **) errorPtr;
 
 //
 // Internal use
 //
 +(void) addErrorMessage:(NSString *) message;
 +(void) addWarningMessage:(NSString *) message;
--(void) parseDescriptorFromProto;
 
 @end
 

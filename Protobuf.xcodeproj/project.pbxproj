@@ -15,6 +15,7 @@
 		BA331B1227479A3F00BE7EF0 /* task.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0E27479A3300BE7EF0 /* task.proto */; };
 		BA331B1327479A3F00BE7EF0 /* taskresponse.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0D27479A3300BE7EF0 /* taskresponse.proto */; };
 		BA331B1427479A4600BE7EF0 /* category.proto in Resources */ = {isa = PBXBuildFile; fileRef = BA331B0C27479A3300BE7EF0 /* category.proto */; };
+		BAA6F4F22862B2B600C3A763 /* data.desc in Resources */ = {isa = PBXBuildFile; fileRef = BAA6F4F12862B2B600C3A763 /* data.desc */; };
 		BAEF8F41255F960200EB8FBD /* Protobuf.h in Headers */ = {isa = PBXBuildFile; fileRef = BAEF8F3F255F960200EB8FBD /* Protobuf.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BAEF90E2255F961800EB8FBD /* source_context.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = BAEF8F4A255F961700EB8FBD /* source_context.pb.h */; };
 		BAEF90E3255F961800EB8FBD /* any.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAEF8F4B255F961700EB8FBD /* any.cc */; };
@@ -431,6 +432,7 @@
 		BA331B0C27479A3300BE7EF0 /* category.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = category.proto; sourceTree = "<group>"; };
 		BA331B0D27479A3300BE7EF0 /* taskresponse.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = taskresponse.proto; sourceTree = "<group>"; };
 		BA331B0E27479A3300BE7EF0 /* task.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = task.proto; sourceTree = "<group>"; };
+		BAA6F4F12862B2B600C3A763 /* data.desc */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.desc; sourceTree = "<group>"; };
 		BAEF8F3C255F960200EB8FBD /* Protobuf.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Protobuf.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAEF8F3F255F960200EB8FBD /* Protobuf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protobuf.h; sourceTree = "<group>"; };
 		BAEF8F40255F960200EB8FBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -864,6 +866,7 @@
 		BA331B0B27479A2B00BE7EF0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BAA6F4F12862B2B600C3A763 /* data.desc */,
 				BA331B0C27479A3300BE7EF0 /* category.proto */,
 				BA331B0E27479A3300BE7EF0 /* task.proto */,
 				BA331B0D27479A3300BE7EF0 /* taskresponse.proto */,
@@ -1714,6 +1717,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA331B1427479A4600BE7EF0 /* category.proto in Resources */,
+				BAA6F4F22862B2B600C3A763 /* data.desc in Resources */,
 				BA331B1227479A3F00BE7EF0 /* task.proto in Resources */,
 				BA331B1327479A3F00BE7EF0 /* taskresponse.proto in Resources */,
 			);
