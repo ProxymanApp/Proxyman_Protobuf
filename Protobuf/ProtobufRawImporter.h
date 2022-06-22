@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
 } PXProtobufPayloadMode;
 
 @protocol ProtobufRawImporterDelegate <NSObject>
+-(void) protobufRawImporterOnInfo:(NSString *) message;
 -(void) protobufRawImporterOnError:(NSString *) message;
 -(void) protobufRawImporterOnWarning:(NSString *) message;
 @end
@@ -44,6 +45,7 @@ typedef enum : NSUInteger {
 //
 // Internal use
 //
++(void) addInfoMessage:(NSString *) message;
 +(void) addErrorMessage:(NSString *) message;
 +(void) addWarningMessage:(NSString *) message;
 

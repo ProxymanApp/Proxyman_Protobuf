@@ -181,8 +181,12 @@ static NSString *_registerRootDirectory = NULL;
             if (![self.allMessageTypes containsObject:fullName]) {
                 // Add at top
                 // Make sure the user's Schemas are always at top of the list
-                NSLog(@"Import Message Name = %@", fullName);
                 [self.allMessageTypes insertObject:fullName atIndex:0];
+
+                // Display on the main app's console log
+                NSString *info = [NSString stringWithFormat:@"Import Message Type = %@", fullName];
+                NSLog(@"%@", info);
+                [ProtobufRawImporter addInfoMessage:info];
             }
         }
     }
@@ -352,6 +356,11 @@ static NSString *_registerRootDirectory = NULL;
 +(void) addWarningMessage:(NSString *) message {
     ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
     [shared.delegate protobufRawImporterOnWarning:[message copy]];
+}
+
++ (void)addInfoMessage:(NSString *)message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnInfo:[message copy]];
 }
 
 +(NSError *) initErrorWithMessage:(NSString *) message code:(NSInteger) code {
