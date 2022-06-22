@@ -140,6 +140,10 @@ static NSString *_registerRootDirectory = NULL;
     }
 }
 
+- (NSArray<NSString *> *)getAllMessageTypes {
+    return [self.allMessageTypes copy];
+}
+
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names {
     // Because there is no way to remove FileDescriptor from DescriptorPool
     // So we have to remove all, then creating new Importer and import the remaining files

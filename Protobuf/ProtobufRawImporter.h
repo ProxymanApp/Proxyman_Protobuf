@@ -28,8 +28,9 @@ typedef enum : NSUInteger {
 // Shouldn't use it directly
 // Please Use ProtobufImporter.swift
 @interface ProtobufRawImporter : NSObject
-@property(readonly, nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
 @property(weak, nonatomic, nullable) id<ProtobufRawImporterDelegate> delegate;
+
+-(NSArray<NSString *> *) getAllMessageTypes;
 
 +(void) registerRootDirectory:(NSString *) rootDirectory;
 +(instancetype) sharedInstance;

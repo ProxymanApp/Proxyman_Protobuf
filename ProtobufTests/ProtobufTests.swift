@@ -31,6 +31,6 @@ class ProtobufTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
 
-        XCTAssertEqual(3, importer.allMessageTypes.count)
+        XCTAssertEqual(3, importer.getAllMessageTypes().count)
     }
 }
