@@ -39,8 +39,7 @@ using namespace google::protobuf::util;
 }
 @end
 
-class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector
-{
+class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector {
 public:
     void AddError(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
@@ -49,8 +48,29 @@ public:
         NSString *error = @(message.c_str());
         [ProtobufRawImporter addErrorMessage:error];
     }
+    
     void AddWarning(const string & filename, int line, int column, const string & message) {
-        printf("[ProtobufRawImporter] Warn: %s\n", message.c_str());
+        printf("[ProtobufRawImporter] ⚠️ Warning: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *warning = @(message.c_str());
+        [ProtobufRawImporter addWarningMessage:warning];
+    }
+};
+
+class ProtobufDescriptorPoolErrorCollector : public google::protobuf::DescriptorPool::ErrorCollector {
+public:
+
+    void AddError(const std::string &filename, const std::string &element_name, const Message *descriptor, ErrorLocation location, const std::string &message) override {
+        printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *error = @(message.c_str());
+        [ProtobufRawImporter addErrorMessage:error];
+    }
+
+    void AddWarning(const std::string &filename, const std::string &element_name, const Message *descriptor, ErrorLocation location, const std::string &message) override {
+        printf("[ProtobufRawImporter] ⚠️ Warning: %s\n", message.c_str());
 
         // Notify the main app
         NSString *warning = @(message.c_str());
@@ -86,9 +106,11 @@ static NSString *_registerRootDirectory = NULL;
 @interface ProtobufRawImporter() {
     Arena arena;
     DiskSourceTree source_tree;
-    ProtobufMultiFileErrorCollector error_collector;
-    Importer *importer;
-    DescriptorPool *descriptor_pool;
+    ProtobufMultiFileErrorCollector proto_error_collector;
+    ProtobufDescriptorPoolErrorCollector desc_error_collector;
+
+    Importer *importer; // improt *.proto
+    DescriptorPool *descriptor_pool; // import *.desc 
 }
 @property (copy, nonatomic) NSString *rootDirectory;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
@@ -125,7 +147,7 @@ static NSString *_registerRootDirectory = NULL;
 
         // back-compatible
         // Support *.proto
-        importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+        importer = Arena::Create<Importer>(&arena, &source_tree, &proto_error_collector);
 
         // New-version
         // Support *.desc
@@ -177,7 +199,7 @@ static NSString *_registerRootDirectory = NULL;
     [self.protobufFiles removeAllObjects];
 
     // Initialize new importer
-    importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+    importer = Arena::Create<Importer>(&arena, &source_tree, &proto_error_collector);
     descriptor_pool = Arena::Create<DescriptorPool>(&arena);
     descriptor_pool->AllowUnknownDependencies();
 }
@@ -196,7 +218,6 @@ static NSString *_registerRootDirectory = NULL;
 
                 // Display on the main app's console log
                 NSString *info = [NSString stringWithFormat:@"Import Message Type = %@", fullName];
-                NSLog(@"%@", info);
                 [ProtobufRawImporter addInfoMessage:info];
             }
         }
@@ -414,7 +435,7 @@ static NSString *_registerRootDirectory = NULL;
     }
 
     for (const auto& d : file_descriptor_set.file()) {
-        const FileDescriptor *file = descriptor_pool->BuildFile(d);
+        const FileDescriptor *file = descriptor_pool->BuildFileCollectingErrors(d, &desc_error_collector);
         [self getMessageTypeFromFileDescriptor:file];
     }
     return;
