@@ -88,6 +88,7 @@ static NSString *_registerRootDirectory = NULL;
     DiskSourceTree source_tree;
     ProtobufMultiFileErrorCollector error_collector;
     Importer *importer;
+    DescriptorPool *descriptor_pool;
 }
 @property (copy, nonatomic) NSString *rootDirectory;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
@@ -121,7 +122,15 @@ static NSString *_registerRootDirectory = NULL;
         _rootDirectory = rootDirectory;
         std::string root_dir = std::string([rootDirectory UTF8String]);
         source_tree.MapPath("", root_dir); // current at root
+
+        // back-compatible
+        // Support *.proto
         importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+
+        // New-version
+        // Support *.desc
+        descriptor_pool = Arena::Create<DescriptorPool>(&arena);
+        descriptor_pool->AllowUnknownDependencies();
         _allMessageTypes = [@[] mutableCopy];
         _protobufFiles = [@[] mutableCopy];
     }
@@ -169,6 +178,8 @@ static NSString *_registerRootDirectory = NULL;
 
     // Initialize new importer
     importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+    descriptor_pool = Arena::Create<DescriptorPool>(&arena);
+    descriptor_pool->AllowUnknownDependencies();
 }
 
 -(void) getMessageTypeFromFileDescriptor:(const FileDescriptor *) fileDescriptor {
@@ -208,12 +219,19 @@ static NSString *_registerRootDirectory = NULL;
         string message_type = string([messageType UTF8String]);
 
         // Find message
-        const Descriptor *message_desc = pool->FindMessageTypeByName(message_type);
+        // 1. Find from descriptor_pool, for all desc file
+        const Descriptor *message_desc = descriptor_pool->FindMessageTypeByName(message_type);
+
+        // 2. If not found, we try to find from proto pool (back-compatible with old version)
+        if (message_desc == NULL) {
+            message_desc = pool->FindMessageTypeByName(message_type);
+        }
+
         if (message_desc == NULL) {
 
             // couldn't find the MessageType in Pool -> Change to Empty and try again
             // It's user-friendly UX
-            message_desc = pool->FindMessageTypeByName(string("google.protobuf.Empty"));
+            message_desc = descriptor_pool->FindMessageTypeByName(string("google.protobuf.Empty"));
             messageType = @"google.protobuf.Empty";
 
             if (message_desc == NULL) {
@@ -395,10 +413,8 @@ static NSString *_registerRootDirectory = NULL;
         }
     }
 
-    google::protobuf::DescriptorPool descriptor_pool;
-    descriptor_pool.AllowUnknownDependencies();
     for (const auto& d : file_descriptor_set.file()) {
-        const FileDescriptor *file = descriptor_pool.BuildFile(d);
+        const FileDescriptor *file = descriptor_pool->BuildFile(d);
         [self getMessageTypeFromFileDescriptor:file];
     }
     return;
