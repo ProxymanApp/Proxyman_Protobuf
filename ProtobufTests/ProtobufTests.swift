@@ -37,7 +37,7 @@ class ProtobufTests: XCTestCase {
 
     func testParseGoogleFile() throws {
         let bundle = Bundle(for: ProtobufTests.self)
-        let file = bundle.url(forResource: "google", withExtension: "desc")!
+        let file = bundle.url(forResource: "google.common", withExtension: "desc")!
         ProtobufRawImporter.registerRootDirectory(file.deletingLastPathComponent().path)
         let importer = ProtobufRawImporter.sharedInstance()
 
@@ -47,8 +47,8 @@ class ProtobufTests: XCTestCase {
         if let error = error {
             XCTFail(error.localizedDescription)
         }
-
-        XCTAssertEqual(26, importer.getAllMessageTypes().count)
+        print(importer.getAllMessageTypes())
+        XCTAssertEqual(47, importer.getAllMessageTypes().count)
     }
 
     func testParseBookData() throws {
@@ -58,7 +58,7 @@ class ProtobufTests: XCTestCase {
 
         ProtobufRawImporter.registerRootDirectory(root.path)
         let importer = ProtobufRawImporter.sharedInstance()
-        let fileGoogle = bundle.url(forResource: "google", withExtension: "desc")!
+        let fileGoogle = bundle.url(forResource: "google.common", withExtension: "desc")!
 
         // Import desc
         var error : NSError?
