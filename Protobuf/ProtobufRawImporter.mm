@@ -436,7 +436,11 @@ static NSString *_registerRootDirectory = NULL;
 
     for (const auto& d : file_descriptor_set.file()) {
         const FileDescriptor *file = descriptor_pool->BuildFileCollectingErrors(d, &desc_error_collector);
-        [self getMessageTypeFromFileDescriptor:file];
+
+        // Must check not nil because duplicated message type (User desc and google.common.desc)
+        if (file != NULL) {
+            [self getMessageTypeFromFileDescriptor:file];
+        }
     }
     return;
 }
