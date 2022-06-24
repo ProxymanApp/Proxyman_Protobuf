@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package com.example;
+
+import "category.proto";
+import "google/protobuf/timestamp.proto";
+
+message Task {
+  string title = 1;
+  Category category = 2;
+  google.protobuf.Timestamp date = 3;
+  bool done = 4;
+}

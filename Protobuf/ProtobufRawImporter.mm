@@ -20,6 +20,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/compiler/command_line_interface.h>
 
 using namespace std;
 using namespace google::protobuf;
@@ -38,8 +39,7 @@ using namespace google::protobuf::util;
 }
 @end
 
-class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector
-{
+class ProtobufMultiFileErrorCollector : public compiler::MultiFileErrorCollector {
 public:
     void AddError(const string & filename, int line, int column, const string & message) {
         printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
@@ -48,8 +48,29 @@ public:
         NSString *error = @(message.c_str());
         [ProtobufRawImporter addErrorMessage:error];
     }
+    
     void AddWarning(const string & filename, int line, int column, const string & message) {
-        printf("[ProtobufRawImporter] Warn: %s\n", message.c_str());
+        printf("[ProtobufRawImporter] ⚠️ Warning: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *warning = @(message.c_str());
+        [ProtobufRawImporter addWarningMessage:warning];
+    }
+};
+
+class ProtobufDescriptorPoolErrorCollector : public google::protobuf::DescriptorPool::ErrorCollector {
+public:
+
+    void AddError(const std::string &filename, const std::string &element_name, const Message *descriptor, ErrorLocation location, const std::string &message) override {
+        printf("[ProtobufRawImporter] ⚠️ ERROR: %s\n", message.c_str());
+
+        // Notify the main app
+        NSString *error = @(message.c_str());
+        [ProtobufRawImporter addErrorMessage:error];
+    }
+
+    void AddWarning(const std::string &filename, const std::string &element_name, const Message *descriptor, ErrorLocation location, const std::string &message) override {
+        printf("[ProtobufRawImporter] ⚠️ Warning: %s\n", message.c_str());
 
         // Notify the main app
         NSString *warning = @(message.c_str());
@@ -85,8 +106,11 @@ static NSString *_registerRootDirectory = NULL;
 @interface ProtobufRawImporter() {
     Arena arena;
     DiskSourceTree source_tree;
-    ProtobufMultiFileErrorCollector error_collector;
-    Importer *importer;
+    ProtobufMultiFileErrorCollector proto_error_collector;
+    ProtobufDescriptorPoolErrorCollector desc_error_collector;
+
+    Importer *importer; // improt *.proto
+    DescriptorPool *descriptor_pool; // import *.desc 
 }
 @property (copy, nonatomic) NSString *rootDirectory;
 @property(nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
@@ -120,7 +144,15 @@ static NSString *_registerRootDirectory = NULL;
         _rootDirectory = rootDirectory;
         std::string root_dir = std::string([rootDirectory UTF8String]);
         source_tree.MapPath("", root_dir); // current at root
-        importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+
+        // back-compatible
+        // Support *.proto
+        importer = Arena::Create<Importer>(&arena, &source_tree, &proto_error_collector);
+
+        // New-version
+        // Support *.desc
+        descriptor_pool = Arena::Create<DescriptorPool>(&arena);
+        descriptor_pool->AllowUnknownDependencies();
         _allMessageTypes = [@[] mutableCopy];
         _protobufFiles = [@[] mutableCopy];
     }
@@ -137,6 +169,10 @@ static NSString *_registerRootDirectory = NULL;
             [self getMessageTypeFromFileDescriptor:file];
         }
     }
+}
+
+- (NSArray<NSString *> *)getAllMessageTypes {
+    return [self.allMessageTypes copy];
 }
 
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names {
@@ -163,7 +199,9 @@ static NSString *_registerRootDirectory = NULL;
     [self.protobufFiles removeAllObjects];
 
     // Initialize new importer
-    importer = Arena::Create<Importer>(&arena, &source_tree, &error_collector);
+    importer = Arena::Create<Importer>(&arena, &source_tree, &proto_error_collector);
+    descriptor_pool = Arena::Create<DescriptorPool>(&arena);
+    descriptor_pool->AllowUnknownDependencies();
 }
 
 -(void) getMessageTypeFromFileDescriptor:(const FileDescriptor *) fileDescriptor {
@@ -177,6 +215,10 @@ static NSString *_registerRootDirectory = NULL;
                 // Add at top
                 // Make sure the user's Schemas are always at top of the list
                 [self.allMessageTypes insertObject:fullName atIndex:0];
+
+                // Display on the main app's console log
+                NSString *info = [NSString stringWithFormat:@"Import Message Type = %@", fullName];
+                [ProtobufRawImporter addInfoMessage:info];
             }
         }
     }
@@ -198,12 +240,19 @@ static NSString *_registerRootDirectory = NULL;
         string message_type = string([messageType UTF8String]);
 
         // Find message
-        const Descriptor *message_desc = pool->FindMessageTypeByName(message_type);
+        // 1. Find from descriptor_pool, for all desc file
+        const Descriptor *message_desc = descriptor_pool->FindMessageTypeByName(message_type);
+
+        // 2. If not found, we try to find from proto pool (back-compatible with old version)
+        if (message_desc == NULL) {
+            message_desc = pool->FindMessageTypeByName(message_type);
+        }
+
         if (message_desc == NULL) {
 
             // couldn't find the MessageType in Pool -> Change to Empty and try again
             // It's user-friendly UX
-            message_desc = pool->FindMessageTypeByName(string("google.protobuf.Empty"));
+            message_desc = descriptor_pool->FindMessageTypeByName(string("google.protobuf.Empty"));
             messageType = @"google.protobuf.Empty";
 
             if (message_desc == NULL) {
@@ -346,5 +395,53 @@ static NSString *_registerRootDirectory = NULL;
 +(void) addWarningMessage:(NSString *) message {
     ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
     [shared.delegate protobufRawImporterOnWarning:[message copy]];
+}
+
++ (void)addInfoMessage:(NSString *)message {
+    ProtobufRawImporter *shared = [ProtobufRawImporter sharedInstance];
+    [shared.delegate protobufRawImporterOnInfo:[message copy]];
+}
+
++(NSError *) initErrorWithMessage:(NSString *) message code:(NSInteger) code {
+    NSString *domain = @"com.proxyman.io.protobuf";
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:message, @"NSLocalizedDescriptionKey",NULL];
+    return [NSError errorWithDomain: domain code: code userInfo: userInfo];
+}
+
+-(void) paresFileDescriptorAtPath:(NSString *) filePath error:(NSError **) errorPtr {
+
+    // Read from file
+    std::string pathName = std::string([filePath UTF8String]);
+    std::vector<std::string> final_args;
+    final_args.push_back(pathName);
+
+    google::protobuf::FileDescriptorSet file_descriptor_set;
+    for (const auto& input : final_args) {
+        int in_fd = ::open(input.c_str(), O_RDONLY);
+        if (in_fd < 0) {
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not load file" code:101];
+            return;
+        }
+        google::protobuf::io::FileInputStream file_stream(in_fd);
+        google::protobuf::io::CodedInputStream coded_input(&file_stream);
+        if (!file_descriptor_set.ParseFromCodedStream(&coded_input)) {
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not parse the desc file" code:102];
+            return ;
+        }
+        if (!file_stream.Close()) {
+            *errorPtr = [ProtobufRawImporter initErrorWithMessage:@"Could not close the file stream" code:103];
+            return ;
+        }
+    }
+
+    for (const auto& d : file_descriptor_set.file()) {
+        const FileDescriptor *file = descriptor_pool->BuildFileCollectingErrors(d, &desc_error_collector);
+
+        // Must check not nil because duplicated message type (User desc and google.common.desc)
+        if (file != NULL) {
+            [self getMessageTypeFromFileDescriptor:file];
+        }
+    }
+    return;
 }
 @end

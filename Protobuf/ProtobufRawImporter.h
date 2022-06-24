@@ -20,6 +20,7 @@ typedef enum : NSUInteger {
 } PXProtobufPayloadMode;
 
 @protocol ProtobufRawImporterDelegate <NSObject>
+-(void) protobufRawImporterOnInfo:(NSString *) message;
 -(void) protobufRawImporterOnError:(NSString *) message;
 -(void) protobufRawImporterOnWarning:(NSString *) message;
 @end
@@ -28,8 +29,9 @@ typedef enum : NSUInteger {
 // Shouldn't use it directly
 // Please Use ProtobufImporter.swift
 @interface ProtobufRawImporter : NSObject
-@property(readonly, nonatomic, nonnull, strong) NSMutableArray<NSString *> *allMessageTypes;
 @property(weak, nonatomic, nullable) id<ProtobufRawImporterDelegate> delegate;
+
+-(NSArray<NSString *> *) getAllMessageTypes;
 
 +(void) registerRootDirectory:(NSString *) rootDirectory;
 +(instancetype) sharedInstance;
@@ -38,10 +40,12 @@ typedef enum : NSUInteger {
 -(void) removeProtobufFileWithNames:(NSArray<NSString *> *) names;
 -(void) resetAll;
 -(NSArray<PXProtobufContent *> * __nonnull) parseProtobufContentWithMessageType:(NSString *) _messageType from:(NSData *) _data payloadMode:(PXProtobufPayloadMode) mode;
+-(void) paresFileDescriptorAtPath:(NSString *) filePath error:(NSError **) errorPtr;
 
 //
 // Internal use
 //
++(void) addInfoMessage:(NSString *) message;
 +(void) addErrorMessage:(NSString *) message;
 +(void) addWarningMessage:(NSString *) message;
 
